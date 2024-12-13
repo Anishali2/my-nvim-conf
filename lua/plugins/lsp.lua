@@ -10,6 +10,8 @@ return {
       -- LSP Configuration
       local lspconfig = require('lspconfig')
       
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
       -- TypeScript/React Language Server Setup
       lspconfig.ts_ls.setup {
         settings = {

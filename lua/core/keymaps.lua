@@ -92,3 +92,16 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
 
 vim.keymap.set("n", "'", "diw")
+
+vim.keymap.set(
+	"n", -- Normal mode
+	"<C-p>", -- Ctrl+Shift+P
+	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
+	{ noremap = true, silent = true }
+)
+vim.keymap.set(
+	"i", -- Normal mode
+	"<C-p>", -- Ctrl+Shift+P
+	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
+	{ noremap = true, silent = true }
+)

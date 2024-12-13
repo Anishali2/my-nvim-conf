@@ -1,9 +1,10 @@
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
-	-- highlight CursorInsert guifg=white guibg=NONE blend=30
-	
+require("core.snippets")
+require("core.command")
 -- Set up the Lazy plugin manager
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -18,11 +19,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	require("plugins.neotree"),
 	require("plugins.colortheme"),
+	require("plugins.copilot"),
 	require("plugins.bufferline"),
 	require("plugins.lualine"),
 	require("plugins.treesitter"),
 	require("plugins.telescope"),
 	require("plugins.lsp"),
+	require("plugins.snippets.luasnip"),
 	-- require("plugins.lsp-config"),
 	require("plugins.autocompletion"),
 	require("plugins.autoformatting"),
@@ -56,5 +59,8 @@ require("lazy").setup({
 				move_past_end_col = false, -- Don't move past end of line
 			})
 		end,
+	},
+	{
+		"AndreM222/copilot-lualine",
 	},
 })

@@ -149,19 +149,21 @@ return {
 						nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
 					},
 					["<2-LeftMouse>"] = "open",
-					["<cr>"] = "open",
+					-- ["<cr>"] = "open",
+					["<cr>"] = "open_with_window_picker",
+						
 					["<esc>"] = "cancel", -- close preview or floating neo-tree window
 					["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
 					-- Read `# Preview Mode` for more information
 					["l"] = "focus_preview",
 					["S"] = "open_split",
-					["s"] = "open_vsplit",
+					["w"] = "open_vsplit",
 					-- ["S"] = "split_with_window_picker",
 					-- ["s"] = "vsplit_with_window_picker",
 					["t"] = "open_tabnew",
 					-- ["<cr>"] = "open_drop",
 					-- ["t"] = "open_tab_drop",
-					["w"] = "open_with_window_picker",
+					["s"] = "open_with_window_picker",
 					--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
 					["C"] = "close_node",
 					-- ['C'] = 'close_all_subnodes',
@@ -226,7 +228,7 @@ return {
 					},
 				},
 				follow_current_file = {
-					enabled = false, -- This will find and focus the file in the active buffer every time
+					enabled = true, -- This will find and focus the file in the active buffer every time
 					--               -- the current file is changed while the tree is open.
 					leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
 				},
