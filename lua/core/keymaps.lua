@@ -10,7 +10,7 @@ local opts = { noremap = true, silent = true }
 
 -- save file
 vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", opts)
-
+vim.keymap.set("i", "<C-s>", "<cmd> w <CR>", opts)
 -- save file without auto-formatting
 vim.keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", opts)
 
@@ -105,3 +105,4 @@ vim.keymap.set(
 	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
 	{ noremap = true, silent = true }
 )
+vim.keymap.set("n", ":","<cmd>FineCmdline<CR>", { noremap = true, silent = true })

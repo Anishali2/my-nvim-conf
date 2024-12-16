@@ -2,7 +2,7 @@ require("core.options")
 require("core.autocmds")
 require("core.keymaps")
 require("core.snippets")
-require("core.command")
+-- require("core.command")
 -- Set up the Lazy plugin manager
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -14,7 +14,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
-
 -- Set up plugins
 require("lazy").setup({
 	require("plugins.neotree"),
@@ -26,7 +25,7 @@ require("lazy").setup({
 	require("plugins.telescope"),
 	require("plugins.lsp"),
 	require("plugins.snippets.luasnip"),
-	-- require("plugins.lsp-config"),
+	require("plugins.command"),
 	require("plugins.autocompletion"),
 	require("plugins.autoformatting"),
 	require("plugins.gitsigns"),
