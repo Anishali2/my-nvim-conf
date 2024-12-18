@@ -105,4 +105,12 @@ vim.keymap.set(
 	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
 	{ noremap = true, silent = true }
 )
-vim.keymap.set("n", ":","<cmd>FineCmdline<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", ":", "<cmd>FineCmdline<CR>", { noremap = true, silent = true })
+-- press ctrl + / to execute vim "gcc" command
+vim.keymap.set("n", "<C-_>", "gcc", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-_>", "gcc", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-_>", "gcc", { noremap = true, silent = true })
+
+vim.keymap.set("i", "<C-e>", function()
+	vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true), "n")
+end, { desc = "Trigger LSP Completion" })

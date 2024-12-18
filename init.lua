@@ -17,7 +17,9 @@ vim.opt.rtp:prepend(lazypath)
 -- Set up plugins
 require("lazy").setup({
 	require("plugins.neotree"),
+	require("plugins.tabout"),
 	require("plugins.colortheme"),
+	require("plugins.flash"),
 	require("plugins.copilot"),
 	require("plugins.bufferline"),
 	require("plugins.lualine"),
@@ -43,6 +45,7 @@ require("lazy").setup({
 			require("telescope").load_extension("import")
 		end,
 	},
+
 	{
 		"rktjmp/lush.nvim",
 	},
