@@ -14,6 +14,64 @@ local Path = require("plenary.path")
 -- Define the custom highlight group for the search term
 vim.api.nvim_set_hl(0, "TelescopeRedHighlight", { fg = "red", bold = true })
 
+-- Predefined imports for popular libraries
+local default_imports = {
+  react = {
+    { name = "React", path = "react" },
+    { name = "{ useState }", path = "react" },
+    { name = "{ useEffect }", path = "react" },
+    { name = "{ useContext }", path = "react" },
+  },
+  formik = {
+    { name = "Formik", path = "formik" },
+    { name = "{ useFormik }", path = "formik" },
+  },
+  lodash = {
+    { name = "{ debounce }", path = "lodash" },
+    { name = "{ throttle }", path = "lodash" },
+  },
+  ["react-router-dom"] = {
+    { name = "BrowserRouter", path = "react-router-dom" },
+    { name = "{ Link }", path = "react-router-dom" },
+    { name = "{ useHistory }", path = "react-router-dom" },
+  },
+}
+
+-- Helper: Get Libraries from package.json
+local function get_libraries_from_package_json()
+  local package_json_path = Path:new(vim.loop.cwd() .. "/package.json")
+
+  if not package_json_path:exists() then
+    vim.notify("No package.json found in the project root. Skipping library imports.", vim.log.levels.WARN)
+    return {}
+  end
+
+  local package_json = package_json_path:read()
+  local parsed = vim.fn.json_decode(package_json)
+
+  local dependencies = parsed.dependencies or {}
+  local devDependencies = parsed.devDependencies or {}
+
+  local libraries = vim.tbl_keys(dependencies)
+  vim.list_extend(libraries, vim.tbl_keys(devDependencies))
+
+  return libraries
+end
+
+-- Helper: Filter Default Imports Based on Installed Libraries
+local function get_filtered_library_imports()
+  local libraries = get_libraries_from_package_json()
+  local filtered_imports = {}
+
+  for _, library in ipairs(libraries) do
+    if default_imports[library] then
+      vim.list_extend(filtered_imports, default_imports[library])
+    end
+  end
+
+  return filtered_imports
+end
+
 -- Helper: Calculate relative path
 local function get_relative_path(current_file, target_file)
   local current_parts = vim.split(Path:new(current_file):parent():absolute(), Path.path.sep)
@@ -60,10 +118,10 @@ local function insert_import(entry)
   local component = entry.name
   local import_statement
 
-  if entry.code:match("export%s+default") then
+  if entry.code and entry.code:match("export%s+default") then
     import_statement = string.format('import %s from "%s";', component, path)
   else
-    import_statement = string.format('import { %s } from "%s";', component, path)
+    import_statement = string.format('import %s from "%s";', component, path)
   end
 
   if import_line then
@@ -101,50 +159,55 @@ local function search_components(opts)
   local current_file = vim.api.nvim_buf_get_name(0)
   local search_term = opts.search_term or ""
 
+  -- Get Project Exports
   local results = vim.fn.systemlist(
     "rg --no-heading --line-number --color never '^export\\s+(const|let|function|default)'"
   )
+  local project_exports = parse_results(results, current_file, search_term)
 
-  local exports = parse_results(results, current_file, search_term)
+  -- Get Filtered Library Imports
+  local library_imports = get_filtered_library_imports()
+
+  -- Combine Project and Library Imports
+  local exports = vim.tbl_extend("force", project_exports, library_imports)
 
   if #exports == 0 then
-    vim.notify("No exports found matching your query!", vim.log.levels.WARN)
+    vim.notify("No exports or library imports found!", vim.log.levels.WARN)
     return
   end
 
-  -- Syntax Highlighting for Results Pane
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "TelescopeResults",
-    callback = function(ctx)
-      vim.api.nvim_buf_set_option(ctx.buf, "filetype", "typescript")
-    end,
-  })
-
-  -- Picker
+  -- Display the Picker
   pickers.new(opts, {
-    prompt_title = "Search Exports",
+    prompt_title = "Search Imports",
     finder = finders.new_table({
       results = exports,
       entry_maker = function(entry)
+        local display
+        if entry.is_library then
+          display = string.format("import %s from '%s'", entry.name, entry.path)
+        else
+          display = string.format("import %s from '%s'", entry.name, entry.path)
+        end
         return {
           value = entry,
-          display = string.format("import { %s } from \"%s\";", entry.name, entry.path),
-          ordinal = entry.name,
+          display = display,
+          ordinal = entry.name .. " " .. entry.path, -- Include path for better filtering
         }
       end,
     }),
     previewer = previewers.new_buffer_previewer({
       define_preview = function(self, entry)
-        local absolute_path = Path:new(entry.value.abs_path or entry.value.path):absolute()
-        conf.buffer_previewer_maker(absolute_path, self.state.bufnr, {
-          bufname = self.state.bufname,
-        })
-
-        -- Highlight the search term in the preview
-        local search_term = entry.value.name
-        vim.api.nvim_buf_call(self.state.bufnr, function()
-          vim.fn.matchadd("TelescopeRedHighlight", search_term)
-        end)
+        if entry.value.is_library then
+          vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {
+            "Library Import:",
+            string.format("import %s from '%s';", entry.value.name, entry.value.path),
+          })
+        else
+          local absolute_path = Path:new(entry.value.abs_path or entry.value.path):absolute()
+          conf.buffer_previewer_maker(absolute_path, self.state.bufnr, {
+            bufname = self.state.bufname,
+          })
+        end
       end,
     }),
     sorter = conf.generic_sorter(opts),
@@ -164,6 +227,7 @@ local function search_components(opts)
           insert_import(entry.value)
         end
       end)
+
       return true
     end,
   }):find()
@@ -173,3 +237,4 @@ end
 return telescope.register_extension({
   exports = { myimport = search_components },
 })
+
