@@ -80,7 +80,7 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 -- vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
-vim.api.nvim_set_keymap("n", "<leader>i", "<cmd>Telescope import<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>i", "<cmd>Telescope myimport<CR>", { noremap = true, silent = true })
 -- In your keymap configuration:
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }

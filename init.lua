@@ -65,4 +65,15 @@ require("lazy").setup({
 	{
 		"AndreM222/copilot-lualine",
 	},
+	-- {
+	-- 	"my-telescope-plugin",
+	-- 	dir = vim.fn.stdpath("config") .. "/lua/telescope-myimport/init.lua", -- Define custom plugin directory
+	-- 	config = function()
+	-- 	  -- Ensure your custom extension is available
+	-- 	  require("telescope").load_extension("myimport")
+	-- 	end,
+	--   },
 })
+-- Set up the telescope-myimport plugin
+require("telescope").setup({})
+require("telescope").load_extension("myimport")

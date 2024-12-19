@@ -78,3 +78,10 @@ vim.cmd [[
     autocmd VimEnter * highlight CursorColumn guibg=#2c323c ctermbg=8
   augroup END
 ]]
+-- Add the background and text color of telescope search results
+vim.cmd [[
+  augroup TelescopeSearchHighlight
+	autocmd!
+	autocmd ColorScheme * highlight TelescopeSearchHighlight guibg=#2c323c guifg=#d7d7d7
+  augroup END
+]]
