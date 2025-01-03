@@ -1,45 +1,34 @@
-local function FunctionalComponentSnippet(args)
-	-- Split the arguments by whitespace
-	local parts = {}
-	for word in args.args:gmatch("%S+") do
-		table.insert(parts, word)
-	end
-
-	local component_name = parts[1] or "Component"
-
-	local line_num = vim.api.nvim_win_get_cursor(0)[1]
-
-	local lines = {
-		"function " .. component_name .. " () {",
-		"",
-		"return (",
-		"   <div>",
-		"      <></>",
-		"   </div>",
-		"  )",
-		"}",
-		"",
-		"export default" .. component_name .. "",
-	}
-
-	vim.api.nvim_buf_set_lines(0, line_num, line_num, false, lines)
+local ok, luasnip = pcall(require, "luasnip")
+if not ok then
+  vim.notify("LuaSnip not found! Please install it.", vim.log.levels.ERROR)
+  return
 end
 
-vim.api.nvim_create_user_command("Srafce", FunctionalComponentSnippet, { nargs = "+" })
--- Use State Snippet
-local function UseStateSnippet(args)
-	local parts = {}
-	for word in args.args:gmatch("%S+") do
-		table.insert(parts, word)
-	end
-	local state_name = parts[1] or "Component"
-	local value = parts[2] or "Component"
-	local line_num = vim.api.nvim_win_get_cursor(0)[1]
-	local lines = {
-		"const [" .. state_name .. ", set" .. state_name .. "] = useState(" .. value .. ")",
-	}
+-- Define the reusable hookcomp snippet
+local hookcomp_snippet = luasnip.snippet("hookcomp", {
+  luasnip.text_node("export default function "),
+  luasnip.insert_node(1, "Component"),
+  luasnip.text_node("() {"),
+  luasnip.text_node("  const ["),
+  luasnip.insert_node(2, "state"),
+  luasnip.text_node(", set"),
+  luasnip.dynamic_node(3, function(args)
+    return luasnip.snippet_node(nil, {
+      luasnip.text_node(args[1][1]:gsub("^%l", string.upper)), -- Capitalize the first letter of the second cursor word
+    })
+  end, { 2 }),
+  luasnip.text_node("] = useState("),
+  luasnip.insert_node(4, ""),
+  luasnip.text_node(");"),
+  luasnip.text_node("  "),  -- Adds some spacing for readability
+  luasnip.insert_node(0),    -- Last cursor position
+  luasnip.text_node(""),
+  luasnip.text_node("}"),
+})
 
-	vim.api.nvim_buf_set_lines(0, line_num, line_num, false, lines)
-end
+-- Register the snippet for multiple filetypes
+luasnip.add_snippets("javascript", { hookcomp_snippet })
+luasnip.add_snippets("typescriptreact", { hookcomp_snippet })
 
-vim.api.nvim_create_user_command("State", UseStateSnippet, { nargs = "+" })
+return luasnip
+:

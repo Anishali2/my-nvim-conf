@@ -54,7 +54,11 @@ return {
             ['<C-k>'] = require('telescope.actions').move_selection_previous, -- move to prev result
             ['<C-j>'] = require('telescope.actions').move_selection_next, -- move to next result
             ['<C-l>'] = require('telescope.actions').select_default, -- open file
+        ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Insert mode
           },
+      n = {
+        ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Normal mode
+      },
         },
       },
       pickers = {

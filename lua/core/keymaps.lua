@@ -80,10 +80,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 -- vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
-vim.api.nvim_set_keymap("n", "<leader>i", "<cmd>Telescope myimport<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>i", "<cmd>Telescope myimport<CR>", opts)
 -- In your keymap configuration:
 local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
+
 
 -- Normal mode: Toggle comment on the current line with Ctrl+/
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==") -- move line up(n)
@@ -97,20 +97,44 @@ vim.keymap.set(
 	"n", -- Normal mode
 	"<C-p>", -- Ctrl+Shift+P
 	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
-	{ noremap = true, silent = true }
+	opts
 )
 vim.keymap.set(
 	"i", -- Normal mode
 	"<C-p>", -- Ctrl+Shift+P
 	"<cmd>Telescope oldfiles<CR>", -- Directly run the 'Search Recent Files' Telescope command
-	{ noremap = true, silent = true }
+	opts
 )
-vim.keymap.set("n", ":", "<cmd>FineCmdline<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", ":", "<cmd>FineCmdline<CR>", opts)
 -- press ctrl + / to execute vim "gcc" command
-vim.keymap.set("n", "<C-_>", "gcc", { noremap = true, silent = true })
-vim.keymap.set("v", "<C-_>", "gcc", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-_>", "gcc", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-_>", "gcc", opts)
+vim.keymap.set("v", "<C-_>", "gcc", opts)
+vim.keymap.set("i", "<C-_>", "gcc", opts)
 
 vim.keymap.set("i", "<C-e>", function()
 	vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-x><C-o>", true, true, true), "n")
 end, { desc = "Trigger LSP Completion" })
+vim.api.nvim_set_keymap('n', '<C-A>', 'ggVG', opts)
+vim.api.nvim_set_keymap('i', '<C-A>', '<cmd>stopinsert<CR>ggVG', opts)
+-- Copy to clipboard
+vim.api.nvim_set_keymap('n', '<C-c>', '"+y', opts)
+vim.api.nvim_set_keymap('v', '<C-c>', '"+y', opts)
+
+-- Paste from clipboard
+vim.api.nvim_set_keymap('n', '<C-v>', '"+gP', opts)
+vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', opts)
+
+vim.api.nvim_set_keymap('n', '<C-x>', '"+d', opts)
+vim.api.nvim_set_keymap('v', '<C-x>', '"+d', opts)
+
+-- Undo (Ctrl+Z)
+vim.api.nvim_set_keymap('n', '<C-z>', 'u', opts)
+vim.api.nvim_set_keymap('i', '<C-z>', '<C-o>u', opts)
+
+-- Redo (Ctrl+Shift+Z)
+vim.api.nvim_set_keymap('n', '<C-S-z>', '<C-r>', opts)
+vim.api.nvim_set_keymap('i', '<C-S-z>', '<C-o><C-r>', opts)
+
+
+-- Use Telescope Buffers 
+vim.api.nvim_set_keymap('n', '<leader>sb', '<cmd>Telescope buffers<CR>', opts)

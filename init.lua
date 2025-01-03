@@ -1,9 +1,6 @@
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
-require("core.snippets")
--- require("core.command")
--- Set up the Lazy plugin manager
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -16,9 +13,14 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- Set up plugins
 require("lazy").setup({
+	--
 	require("plugins.neotree"),
+	require("plugins.vscode-theme"),
+	require("plugins.folder-icons"),
+	-- require("plugins.auto-save"),
+	require("plugins.scroll-bar"),
 	require("plugins.tabout"),
-	require("plugins.colortheme"),
+	-- require("plugins.colortheme"),
 	require("plugins.flash"),
 	require("plugins.copilot"),
 	require("plugins.bufferline"),
@@ -26,9 +28,12 @@ require("lazy").setup({
 	require("plugins.treesitter"),
 	require("plugins.telescope"),
 	require("plugins.lsp"),
+	-- require("plugins.nvimcap"),
+	--
 	require("plugins.snippets.luasnip"),
+	-- require("plugins.autocompletion"),
+	--
 	require("plugins.command"),
-	require("plugins.autocompletion"),
 	require("plugins.autoformatting"),
 	require("plugins.gitsigns"),
 	require("plugins.alpha"),
@@ -37,7 +42,7 @@ require("lazy").setup({
 	require("plugins.auto-close-tag"),
 	require("plugins.git-lens"),
 	require("plugins.fold-ufo"),
-	require("plugins.path-auto-complete"),
+	require("plugins.path-auto-complete-new"),
 	{
 		"piersolenski/telescope-import.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim" },
@@ -45,10 +50,13 @@ require("lazy").setup({
 			require("telescope").load_extension("import")
 		end,
 	},
-
+-- This lush plugin is used for color schemes 
 	{
 		"rktjmp/lush.nvim",
 	},
+-- This nvim-gomove plugin is used for moving lines
+-- useage is <leader>g
+
 	{
 		"booperlv/nvim-gomove",
 		priority = 10000,
@@ -62,18 +70,13 @@ require("lazy").setup({
 			})
 		end,
 	},
+-- This copilot-lualine plugin is used for the status line of copilot
 	{
 		"AndreM222/copilot-lualine",
 	},
-	-- {
-	-- 	"my-telescope-plugin",
-	-- 	dir = vim.fn.stdpath("config") .. "/lua/telescope-myimport/init.lua", -- Define custom plugin directory
-	-- 	config = function()
-	-- 	  -- Ensure your custom extension is available
-	-- 	  require("telescope").load_extension("myimport")
-	-- 	end,
-	--   },
+
 })
 -- Set up the telescope-myimport plugin
-require("telescope").setup({})
-require("telescope").load_extension("myimport")
+-- require("telescope").setup({})
+-- require("telescope").load_extension("myimport")
+-- require("core.snippets")

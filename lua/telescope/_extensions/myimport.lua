@@ -14,6 +14,29 @@ local Path = require("plenary.path")
 -- Define the custom highlight group for the search term
 vim.api.nvim_set_hl(0, "TelescopeRedHighlight", { fg = "red", bold = true })
 
+-- Predefined imports for popular libraries
+local default_imports = {
+  react = {
+    { name = "React", path = "react" },
+    { name = "{ useState }", path = "react" },
+    { name = "{ useEffect }", path = "react" },
+    { name = "{ useContext }", path = "react" },
+  },
+  formik = {
+    { name = "Formik", path = "formik" },
+    { name = "{ useFormik }", path = "formik" },
+  },
+  lodash = {
+    { name = "{ debounce }", path = "lodash" },
+    { name = "{ throttle }", path = "lodash" },
+  },
+  ["react-router-dom"] = {
+    { name = "BrowserRouter", path = "react-router-dom" },
+    { name = "{ Link }", path = "react-router-dom" },
+    { name = "{ useHistory }", path = "react-router-dom" },
+  },
+}
+
 -- Helper: Get Libraries from package.json
 local function get_libraries_from_package_json()
   local package_json_path = Path:new(vim.loop.cwd() .. "/package.json")
@@ -35,68 +58,18 @@ local function get_libraries_from_package_json()
   return libraries
 end
 
--- Helper: Remove "@types/" from library names
-local function normalize_library_name(library)
-  if library:match("^@types/") then
-    return library:gsub("^@types/", "")
-  end
-  return library
-end
+-- Helper: Filter Default Imports Based on Installed Libraries
+local function get_filtered_library_imports()
+  local libraries = get_libraries_from_package_json()
+  local filtered_imports = {}
 
--- Helper: Extract Exports from Library Files
-local function get_library_exports(library)
-  local normalized_library = normalize_library_name(library)
-  local library_path = Path:new(vim.loop.cwd() .. "/node_modules/" .. library)
-
-  if not library_path:exists() then
-    return {}
-  end
-
-  -- Find the main file or index.js in the library package.json
-  local library_package_json_path = library_path:joinpath("package.json")
-  if not library_package_json_path:exists() then
-    return {}
-  end
-
-  local library_package_json = library_package_json_path:read()
-  local parsed = vim.fn.json_decode(library_package_json)
-  local main_file = parsed.main or "index.js"
-
-  local main_file_path = library_path:joinpath(main_file)
-  if not main_file_path:exists() then
-    return {}
-  end
-
-  -- Use Ripgrep to extract valid exports from the main file
-  local results = vim.fn.systemlist(
-    string.format("rg --no-heading --line-number --color never 'export' %s", main_file_path:absolute())
-  )
-
-  local exports = {}
-  for _, line in ipairs(results) do
-    -- Ignore `declare` exports
-    if not line:match("declare%s+function") then
-      local exported_name = line:match("export%s+[%w_%s]*%s+([%w_]+)")
-      if exported_name then
-        table.insert(exports, { name = exported_name, path = normalized_library, is_library = true })
-      end
+  for _, library in ipairs(libraries) do
+    if default_imports[library] then
+      vim.list_extend(filtered_imports, default_imports[library])
     end
   end
 
-  return exports
-end
-
--- Helper: Combine All Library Exports
-local function get_all_library_exports()
-  local libraries = get_libraries_from_package_json()
-  local all_exports = {}
-
-  for _, library in ipairs(libraries) do
-    local exports = get_library_exports(library)
-    vim.list_extend(all_exports, exports)
-  end
-
-  return all_exports
+  return filtered_imports
 end
 
 -- Helper: Calculate relative path
@@ -192,11 +165,11 @@ local function search_components(opts)
   )
   local project_exports = parse_results(results, current_file, search_term)
 
-  -- Get All Library Exports
-  local library_exports = get_all_library_exports()
+  -- Get Filtered Library Imports
+  local library_imports = get_filtered_library_imports()
 
   -- Combine Project and Library Imports
-  local exports = vim.tbl_extend("force", project_exports, library_exports)
+  local exports = vim.tbl_extend("force", project_exports, library_imports)
 
   if #exports == 0 then
     vim.notify("No exports or library imports found!", vim.log.levels.WARN)
@@ -264,4 +237,5 @@ end
 return telescope.register_extension({
   exports = { myimport = search_components },
 })
+
 
