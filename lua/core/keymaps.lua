@@ -138,3 +138,26 @@ vim.api.nvim_set_keymap('i', '<C-S-z>', '<C-o><C-r>', opts)
 
 -- Use Telescope Buffers 
 vim.api.nvim_set_keymap('n', '<leader>sb', '<cmd>Telescope buffers<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>rr', ':source $MYVIMRC<CR>:Lazy reload<CR>', { noremap = true, silent = true })
+
+local function toggle_true_false()
+  local current_word = vim.fn.expand("<cword>")
+  if current_word == "true" then
+    vim.cmd('normal! ciwfalse')
+  elseif current_word == "false" then
+    vim.cmd('normal! ciwtrue')
+  end
+end
+
+-- Map the function to a keybinding
+vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>lua toggle_true_false()<CR>', { noremap = true, silent = true })
+
+
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { silent = true })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true })
+
+
+vim.keymap.set("n", "<leader>gs", ":Neotree reveal git_status<CR>", { noremap = true, silent = true })
+
+

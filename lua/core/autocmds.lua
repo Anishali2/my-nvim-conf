@@ -12,3 +12,15 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt.conceallevel = 0
 	end,
 })
+local function toggle_true_false()
+  local current_word = vim.fn.expand("<cword>")
+  if current_word == "true" then
+    vim.cmd('normal! ciwfalse')
+  elseif current_word == "false" then
+    vim.cmd('normal! ciwtrue')
+  end
+end
+
+-- Map the function to a keybinding
+vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>lua toggle_true_false()<CR>', { noremap = true, silent = true })
+

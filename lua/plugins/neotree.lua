@@ -3,8 +3,23 @@ return {
 	branch = "v3.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+		-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 		"MunifTanjim/nui.nvim",
+		{
+			"DaikyXendo/nvim-material-icon",
+			lazy = false,
+			priority = 1000,
+			config = function()
+				local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
+				local material_icons_ok, material_icons = pcall(require, "nvim-material-icons")
+				
+				if web_devicons_ok and material_icons_ok then
+					web_devicons.setup({
+						override = material_icons.get_icons()
+					})
+				end
+			end
+		},
 		-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		{
 			"s1n7ax/nvim-window-picker",
@@ -66,26 +81,6 @@ return {
 					expander_collapsed = "",
 					expander_expanded = "",
 					expander_highlight = "NeoTreeExpander",
-				},
-				icon = {
-					folder_closed = "",
-					folder_open = "",
-					folder_empty = "󰜌",
-					provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
-						if node.type == "file" or node.type == "terminal" then
-							local success, web_devicons = pcall(require, "nvim-web-devicons")
-							local name = node.type == "terminal" and "terminal" or node.name
-							if success then
-								local devicon, hl = web_devicons.get_icon(name)
-								icon.text = devicon or icon.text
-								icon.highlight = hl or icon.highlight
-							end
-						end
-					end,
-					-- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-					-- then these will never be used.
-					default = "*",
-					highlight = "NeoTreeFileIcon",
 				},
 				modified = {
 					symbol = "[+]",
@@ -301,6 +296,7 @@ return {
 				window = {
 					position = "float",
 					mappings = {
+						["g?"] = "reveal git_status",
 						["A"] = "git_add_all",
 						["gu"] = "git_unstage_file",
 						["ga"] = "git_add_file",
