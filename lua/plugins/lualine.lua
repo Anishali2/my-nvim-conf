@@ -26,7 +26,7 @@ return {
       symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
       colored = false,
       update_in_insert = false,
-      always_visible = false,
+      always_visible = true,
       cond = hide_in_width,
     }
 

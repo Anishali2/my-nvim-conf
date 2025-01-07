@@ -296,7 +296,6 @@ return {
 				window = {
 					position = "float",
 					mappings = {
-						["g?"] = "reveal git_status",
 						["A"] = "git_add_all",
 						["gu"] = "git_unstage_file",
 						["ga"] = "git_add_file",

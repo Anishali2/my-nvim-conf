@@ -23,9 +23,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Set up plugins
 require("lazy").setup({
 	--
-	require("plugins.neotree"),
 	require("plugins.vscode-theme"),
-	require("plugins.folder-icons"),
+	-- require("plugins.folder-icons"),
 	-- require("plugins.auto-save"),
 	require("plugins.scroll-bar"),
 	require("plugins.tabout"),
@@ -52,6 +51,7 @@ require("lazy").setup({
 	require("plugins.git-lens"),
 	require("plugins.fold-ufo"),
 	require("plugins.path-auto-complete-new"),
+	require("plugins.neotree"),
 	{
 		"piersolenski/telescope-import.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim" },
@@ -61,29 +61,33 @@ require("lazy").setup({
 	},
 -- This lush plugin is used for color schemes 
 	{
-		"rktjmp/lush.nvim",
+	"rktjmp/lush.nvim",
 	},
 -- This nvim-gomove plugin is used for moving lines
 -- useage is <leader>g
-
-	{
-		"booperlv/nvim-gomove",
-		priority = 10000,
-		config = function()
-			require("gomove").setup({
-				-- Optional configuration
-				map_defaults = true, -- Use default key mappings
-				reindent = true, -- Reindent when moving lines
-				undojoin = true, -- Undo block after movement
-				move_past_end_col = false, -- Don't move past end of line
-			})
-		end,
-	},
+        {
+	"booperlv/nvim-gomove",
+	priority = 10000,
+	config = function()
+		require("gomove").setup({
+		-- Optional configuration
+		map_defaults = true, -- Use default key mappings
+		reindent = true, -- Reindent when moving lines
+		undojoin = true, -- Undo block after movement
+		move_past_end_col = false, -- Don't move past end of line
+		})
+	end,
+},
 -- This copilot-lualine plugin is used for the status line of copilot
-	{
-		"AndreM222/copilot-lualine",
-	},
+{
+	"AndreM222/copilot-lualine",
+},
 
+{
+	"echasnovski/mini.icons",
+		opts = {},
+		lazy = true,
+	  },
 })
 -- Set up the telescope-myimport plugin
 -- require("telescope").setup({})
