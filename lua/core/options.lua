@@ -24,7 +24,7 @@ vim.o.numberwidth = 4 -- Set number column width to 2 {default 4} (default: 4)
 vim.o.swapfile = false -- Creates a swapfile (default: true)
 vim.o.smartindent = true -- Make indenting smarter again (default: false)
 vim.o.showtabline = 2 -- Always show tabs (default: 1)
-vim.o.backspace = "indent,eol,start" -- Allow backspace on (default: 'indent,eol,start')
+vim.o.backspace = "indent,eol" -- Allow backspace on (default: 'indent,eol,start')
 vim.o.pumheight = 10 -- Pop up menu height (default: 0)
 vim.o.conceallevel = 0 -- So that `` is visible in markdown files (default: 1)
 vim.wo.signcolumn = "yes" -- Keep signcolumn on by default (default: 'auto')
@@ -60,3 +60,52 @@ vim.cmd [[
 	autocmd ColorScheme * highlight TelescopeSearchHighlight guibg=#2c323c guifg=#d7d7d7
   augroup END
 ]]
+-- Add to core.options
+local opt = vim.opt
+
+-- Decrease update time
+opt.updatetime = 250
+opt.timeout = true
+opt.timeoutlen = 300
+
+-- Reduce data that Neovim has to process
+opt.history = 100
+opt.undolevels = 1000
+
+-- Optimize terminal performance
+opt.ttyfast = true
+opt.lazyredraw = true
+
+-- More efficient scroll
+opt.scrolljump = 1
+
+-- Disable unnecessary providers
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+
+-- Disable unused built-in plugins
+local disabled_built_ins = {
+  "netrw",
+  "netrwPlugin",
+  "netrwSettings",
+  "netrwFileHandlers",
+  "gzip",
+  "zip",
+  "zipPlugin",
+  "tar",
+  "tarPlugin",
+  "getscript",
+  "getscriptPlugin",
+  "vimball",
+  "vimballPlugin",
+  "2html_plugin",
+  "logipat",
+  "rrhelper",
+  "spellfile_plugin",
+}
+
+for _, plugin in pairs(disabled_built_ins) do
+  vim.g["loaded_" .. plugin] = 1
+end

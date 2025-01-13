@@ -27,6 +27,7 @@ require("lazy").setup({
 	-- require("plugins.folder-icons"),
 	-- require("plugins.auto-save"),
 	require("plugins.scroll-bar"),
+	require("plugins.which-key"),
 	require("plugins.tabout"),
 	-- require("plugins.colortheme"),
 	require("plugins.flash"),

@@ -1,7 +1,4 @@
-export default function world() {
-  return (
-    <div>
-      <h1>Test</h1>
-    </div>
-  );
+export default function name(params: type) {
+  alert("test");
+  return "test";
 }

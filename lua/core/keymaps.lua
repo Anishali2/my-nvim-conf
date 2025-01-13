@@ -57,6 +57,8 @@ vim.keymap.set("n", "<leader>to", ":tabnew<CR>", opts) -- open new tab
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", opts) -- close current tab
 vim.keymap.set("n", "<leader>tn", ":tabn<CR>", opts) --  go to next tab
 vim.keymap.set("n", "<leader>tp", ":tabp<CR>", opts) --  go to previous tab
+-- Close all tabs except the current one
+vim.keymap.set("n", "<leader>tc", ":tabonly<CR>", opts)
 
 -- Toggle line wrapping
 vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
@@ -86,8 +88,8 @@ local map = vim.api.nvim_set_keymap
 
 
 -- Normal mode: Toggle comment on the current line with Ctrl+/
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==") -- move line up(n)
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==") -- move line down(n)
+vim.keymap.set("n", "<A-j>", "<cmd>m .+1<CR>") -- move line up(n)
+vim.keymap.set("n", "<A-k>", "<cmd>m .-2<CR>") -- move line down(n)
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
 
@@ -160,4 +162,6 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true })
 
 vim.keymap.set("n", "<leader>gs", ":Neotree reveal git_status<CR>", { noremap = true, silent = true })
 
+-- Search for whole word only
+vim.keymap.set("n", "g/", "/\\<\\><Left><Left>", opts)         -- Search for whole words only
 

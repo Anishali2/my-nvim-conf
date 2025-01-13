@@ -163,7 +163,7 @@ return {
 					["C"] = "close_node",
 					-- ['C'] = 'close_all_subnodes',
 					["z"] = "close_all_nodes",
-					--["Z"] = "expand_all_nodes",
+					["Z"] = "expand_all_nodes",
 					["a"] = {
 						"add",
 						-- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
@@ -225,7 +225,7 @@ return {
 				follow_current_file = {
 					enabled = true, -- This will find and focus the file in the active buffer every time
 					--               -- the current file is changed while the tree is open.
-					leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+					leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
 				},
 				group_empty_dirs = false, -- when true, empty folders will be grouped together
 				hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
