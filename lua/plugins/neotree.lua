@@ -293,7 +293,6 @@ return {
 				},
 			},
 			git_status = {
-
 				window = {
 					position = "float",
 					mappings = {
