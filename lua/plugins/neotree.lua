@@ -1,25 +1,29 @@
+local icons = require("custom.icons")
+
 return {
 	"nvim-neo-tree/neo-tree.nvim",
 	branch = "v3.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 		"MunifTanjim/nui.nvim",
-		{
-			"DaikyXendo/nvim-material-icon",
-			lazy = false,
-			priority = 1000,
-			config = function()
-				local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
-				local material_icons_ok, material_icons = pcall(require, "nvim-material-icons")
-				
-				if web_devicons_ok and material_icons_ok then
-					web_devicons.setup({
-						override = material_icons.get_icons()
-					})
-				end
-			end
-		},
+		{ "echasnovski/mini.icons", opts = {} }, -- add mini.icons
+
+		 
+		-- {
+		-- 	"DaikyXendo/nvim-material-icon",
+		-- 	lazy = false,
+		-- 	priority = 1000,
+		-- 	config = function()
+		-- 		local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
+		-- 		local material_icons_ok, material_icons = pcall(require, "nvim-material-icons")
+		--
+		-- 		 if web_devicons_ok and material_icons_ok then
+		-- 			web_devicons.setup({
+		-- 				override = material_icons.get_icons()
+		-- 			})
+		-- 		end
+		-- 	end
+		-- },
 		-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		{
 			"s1n7ax/nvim-window-picker",
@@ -65,68 +69,51 @@ return {
 			--       end
 			--   end , -- this sorts files and directories descendantly
 			default_component_configs = {
-				container = {
-					enable_character_fade = true,
-				},
-				indent = {
-					indent_size = 2,
-					padding = 1, -- extra padding on left hand side
-					-- indent guides
-					with_markers = true,
-					indent_marker = "│",
-					last_indent_marker = "└",
-					highlight = "NeoTreeIndentMarker",
-					-- expander config, needed for nesting files
-					with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-					expander_collapsed = "",
-					expander_expanded = "",
-					expander_highlight = "NeoTreeExpander",
-				},
-				modified = {
-					symbol = "[+]",
-					highlight = "NeoTreeModified",
-				},
-				name = {
-					trailing_slash = false,
-					use_git_status_colors = true,
-					highlight = "NeoTreeFileName",
-				},
-				git_status = {
-					symbols = {
-						-- Change type
-						added = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-						modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
-						deleted = "✖", -- this can only be used in the git_status source
-						renamed = "󰁕", -- this can only be used in the git_status source
-						-- Status type
-						untracked = "",
-						ignored = "",
-						unstaged = "󰄱",
-						staged = "",
-						conflict = "",
-					},
-				},
-				-- If you don't want to use these columns, you can set `enabled = false` for each of them individually
-				file_size = {
-					enabled = true,
-					required_width = 64, -- min width of window required to show this column
-				},
-				type = {
-					enabled = true,
-					required_width = 122, -- min width of window required to show this column
-				},
-				last_modified = {
-					enabled = true,
-					required_width = 88, -- min width of window required to show this column
-				},
-				created = {
-					enabled = true,
-					required_width = 110, -- min width of window required to show this column
-				},
-				symlink_target = {
-					enabled = false,
-				},
-			},
+				-- icon = {
+				-- 	provider = function(icon, node)
+				-- 	  local text, hl
+				-- 	  local web_devicons = require("nvim-web-devicons")
+				  
+				-- 	  -- Custom icon for the "src" folder
+				-- 	  local custom_folder_icons = {
+				-- 		["src"] = { text = "", hl = "CustomFolderIcon" },
+				-- 	  }
+				  
+				-- 	  if node.type == "file" then
+				-- 		text, hl = web_devicons.get_icon(node.name, nil, { default = true })
+				-- 	  elseif node.type == "directory" then
+				-- 		-- Check if the folder has a custom icon
+				-- 		local custom_icon = custom_folder_icons[node.name]
+				-- 		if custom_icon then
+				-- 		  text = custom_icon.text
+				-- 		  hl = custom_icon.hl
+				-- 		else
+				-- 		  text, hl = web_devicons.get_icon_by_filetype("dir", { default = true })
+				-- 		end
+				  
+				-- 		-- Set the open icon if the folder is expanded
+				-- 		if node:is_expanded() then
+				-- 		  text = web_devicons.get_icon_by_filetype("dir_open", { default = true }) or text
+				-- 		end
+				-- 	  end
+				  
+				-- 	  -- Set the icon text and highlight only if they exist
+				-- 	  if text then
+				-- 		icon.text = text
+				-- 	  end
+				-- 	  if hl then
+				-- 		icon.highlight = hl
+				-- 	  end
+				-- 	end,
+				--   },-- Rest of your component configurations
+				-- kind_icon = {
+				--   provider = function(icon, node)
+				-- 	local mini_icons = require("mini.icons")
+				-- 	icon.text, icon.highlight = mini_icons.get("lsp", node.extra.kind.name)
+				--   end,
+				-- },
+				-- ... other configurations
+			  },
 			-- A list of functions, each representing a global custom command
 			-- that will be available in all sources (if not overridden in `opts[source_name].commands`)
 			-- see `:h neo-tree-custom-commands-global`
@@ -160,7 +147,8 @@ return {
 					-- ["t"] = "open_tab_drop",
 					["s"] = "open_with_window_picker",
 					--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
-					["C"] = "close_node",
+					["e"] = "close_node",
+					["<Esc>[1;5c"] = "close_node",
 					-- ['C'] = 'close_all_subnodes',
 					["z"] = "close_all_nodes",
 					["Z"] = "expand_all_nodes",
@@ -210,6 +198,8 @@ return {
 					},
 					always_show = { -- remains visible even if other settings would normally hide it
 						--".gitignored",
+					    ".env",
+						".env.local",
 					},
 					always_show_by_pattern = { -- uses glob style patterns
 						--".env*",
@@ -297,6 +287,7 @@ return {
 					position = "float",
 					mappings = {
 						["A"] = "git_add_all",
+						["s"] = "open_with_window_picker",
 						["gu"] = "git_unstage_file",
 						["ga"] = "git_add_file",
 						["gr"] = "git_revert_file",

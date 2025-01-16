@@ -4,7 +4,7 @@ vim.o.clipboard = "unnamedplus" -- Sync clipboard between OS and Neovim. (defaul
 vim.o.wrap = false -- Display lines as one long line (default: true)
 vim.o.linebreak = true -- Companion to wrap, don't split words (default: false)
 vim.o.mouse = "a" -- Enable mouse mode (default: '')
-vim.o.autoindent = true -- Copy indent from current line when starting new one (default: true)
+vim.o.autoindent = false -- Copy indent from current line when starting new one (default: true)
 vim.o.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search (default: false)
 vim.o.smartcase = true -- Smart case (default: false)
 vim.o.shiftwidth = 4 -- The number of spaces inserted for each indentation (default: 8)
@@ -24,7 +24,7 @@ vim.o.numberwidth = 4 -- Set number column width to 2 {default 4} (default: 4)
 vim.o.swapfile = false -- Creates a swapfile (default: true)
 vim.o.smartindent = true -- Make indenting smarter again (default: false)
 vim.o.showtabline = 2 -- Always show tabs (default: 1)
-vim.o.backspace = "indent,eol" -- Allow backspace on (default: 'indent,eol,start')
+vim.o.backspace = "indent,eol,start" -- Allow backspace on (default: 'indent,eol,start')
 vim.o.pumheight = 10 -- Pop up menu height (default: 0)
 vim.o.conceallevel = 0 -- So that `` is visible in markdown files (default: 1)
 vim.wo.signcolumn = "yes" -- Keep signcolumn on by default (default: 'auto')
@@ -41,7 +41,7 @@ vim.opt.shortmess:append("c") -- Don't give |ins-completion-menu| messages (defa
 vim.opt.iskeyword:append("-") -- Hyphenated words recognized by searches (default: does not include '-')
 vim.opt.formatoptions:remove({ "c", "r", "o" }) -- Don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode. (default: 'croql')
 vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- Separate Vim plugins from Neovim in case Vim still in use (default: includes this path if Vim is installed)
-
+vim.opt.lazyredraw = true -- More efficient scrolling (default: false) 
 vim.o.foldcolumn = "1" -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99

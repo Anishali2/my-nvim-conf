@@ -1,5 +1,6 @@
 return {
 	"VonHeikemen/fine-cmdline.nvim",
+	decs = "Floating command line",
 	dependencies = { "MunifTanjim/nui.nvim" },
 	opts = {
 		cmdline = {

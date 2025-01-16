@@ -1,10 +1,10 @@
--- Set leader key
+-- Set leader key		  
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Disable the spacebar key's default behavior in Normal and Visual modes
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
-
+vim.keymap.set("n", "<leader>u", vim.lsp.buf.definition, { desc = "Go to Definition" })
 -- For conciseness
 local opts = { noremap = true, silent = true }
 
@@ -51,7 +51,11 @@ vim.keymap.set("n", "<C-k>", ":wincmd k<CR>", opts)
 vim.keymap.set("n", "<C-j>", ":wincmd j<CR>", opts)
 vim.keymap.set("n", "<C-h>", ":wincmd h<CR>", opts)
 vim.keymap.set("n", "<C-l>", ":wincmd l<CR>", opts)
-
+-- Navigate between splits in insert mode
+vim.keymap.set("i", "<C-k>", "<Esc>:wincmd k<CR>", opts)
+vim.keymap.set("i", "<C-j>", "<Esc>:wincmd j<CR>", opts)
+vim.keymap.set("i", "<C-h>", "<Esc>:wincmd h<CR>", opts)
+vim.keymap.set("i", "<C-l>", "<Esc>:wincmd l<CR>", opts)
 -- Tabs
 vim.keymap.set("n", "<leader>to", ":tabnew<CR>", opts) -- open new tab
 vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", opts) -- close current tab

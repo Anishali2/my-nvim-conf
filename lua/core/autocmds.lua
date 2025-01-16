@@ -23,4 +23,12 @@ end
 
 -- Map the function to a keybinding
 vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>lua toggle_true_false()<CR>', { noremap = true, silent = true })
-
+-- Jump to the last edit location when opening a file
+vim.api.nvim_create_autocmd("BufReadPost", {
+    pattern = "*",
+    callback = function()
+        if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+            vim.cmd('normal! g`"')
+        end
+    end,
+})
