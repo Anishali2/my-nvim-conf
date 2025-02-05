@@ -30,7 +30,7 @@ return {
         separator_style = { '│', '│' }, -- | "thick" | "thin" | { 'any', 'any' },
         enforce_regular_tabs = true,
         always_show_bufferline = true,
-        show_tab_indicators = false,
+        show_tab_indicators = true,
         indicator = {
           -- icon = '▎', -- this should be omitted if indicator style is not 'icon'
           style = 'none', -- Options: 'icon', 'underline', 'none'

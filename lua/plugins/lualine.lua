@@ -53,31 +53,31 @@ return {
         lualine_a = { mode },
         lualine_b = { 'branch' },
         lualine_c = { filename },
-        lualine_x = {{
-            'copilot',
-            -- Default values
-            symbols = {
-                status = {
-                    icons = {
-                     enabled = " ", -- Copilot enabled and active
-                      sleep = " ",   -- Copilot auto-trigger disabled
-                      warning = " ",   -- Copilot warning state
-                      error = " ",     -- Copilot error state
-                      disabled = "X",                   },
-                    hl = {
-                        enabled = "#50FA7B",
-                        sleep = "#AEB7D0",
-                        disabled = "#6272A4",
-                        warning = "#FFB86C",
-                        unknown = "#FF5555"
-                    }
-                },
-                spinners = require("copilot-lualine.spinners").dots,
-                spinner_color = "#6272A4"
-            },
-            show_colors = false,
-            show_loading = true
-        }, diagnostics, diff, { 'encoding', cond = hide_in_width }, { 'filetype', cond = hide_in_width } },
+        -- lualine_x = {{
+        --     'copilot',
+        --     -- Default values
+        --     symbols = {
+        --         status = {
+        --             icons = {
+        --              enabled = " ", -- Copilot enabled and active
+        --               sleep = " ",   -- Copilot auto-trigger disabled
+        --               warning = " ",   -- Copilot warning state
+        --               error = " ",     -- Copilot error state
+        --               disabled = "X",                   },
+        --             hl = {
+        --                 enabled = "#50FA7B",
+        --                 sleep = "#AEB7D0",
+        --                 disabled = "#6272A4",
+        --                 warning = "#FFB86C",
+        --                 unknown = "#FF5555"
+        --             }
+        --         },
+        --         spinners = require("copilot-lualine.spinners").dots,
+        --         spinner_color = "#6272A4"
+        --     },
+        --     show_colors = false,
+        --     show_loading = true
+        -- }, diagnostics, diff, { 'encoding', cond = hide_in_width }, { 'filetype', cond = hide_in_width } },
         lualine_y = { 'location' },
         lualine_z = { 'progress' },
       },

@@ -21,9 +21,11 @@ local function toggle_true_false()
   end
 end
 
--- Map the function to a keybinding
-vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>lua toggle_true_false()<CR>', { noremap = true, silent = true })
--- Jump to the last edit location when opening a file
+local function insert_console_log()
+  local current_word = vim.fn.expand("<cword>")
+  vim.cmd('normal! oconsole.log("' .. current_word .. ':", ' .. current_word .. ');')
+end
+
 vim.api.nvim_create_autocmd("BufReadPost", {
     pattern = "*",
     callback = function()
@@ -31,4 +33,22 @@ vim.api.nvim_create_autocmd("BufReadPost", {
             vim.cmd('normal! g`"')
         end
     end,
+})
+
+vim.opt.cmdheight = 0
+
+-- Autocommand to show the command line when entering command mode
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  pattern = { ":", "/", "?" },
+  callback = function()
+    vim.opt.cmdheight = 1 -- Show the command line
+  end,
+})
+
+-- Autocommand to hide the command line after leaving command mode
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  pattern = { ":", "/", "?" },
+  callback = function()
+    vim.opt.cmdheight = 0 -- Hide the command line
+  end,
 })

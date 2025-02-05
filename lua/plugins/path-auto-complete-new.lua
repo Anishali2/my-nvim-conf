@@ -153,6 +153,19 @@ return {
             fallback()
           end
         end, { "i", "s" }),
+        ["<leader>tq"] = cmp.mapping(function()
+  -- Move to the next diagnostic
+          vim.diagnostic.goto_next()
+
+          -- Move to the end of the word
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("e", true, false, true), 'n', true)
+
+          -- Switch to Insert mode
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("a", true, false, true), 'n', true)
+
+          -- Trigger the LSP dropdown
+          cmp.complete()
+        end, { "n" }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()

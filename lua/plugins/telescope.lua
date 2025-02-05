@@ -86,6 +86,31 @@ return {
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
+    vim.keymap.set('n', '<leader>si', builtin.git_status, { desc = '[G]it [S]tatus (staged/unstaged files)' })
+    -- Search for files text in github staged and unstaged
+vim.keymap.set("n", "<leader>so", function()
+  -- Get staged, unstaged, and untracked files (same as git_status)
+  local cmd = "git -c core.quotePath= status -s --porcelain -u | awk '{print $2}'"
+  local ok, files = pcall(vim.fn.systemlist, cmd)
+  
+  if not ok or vim.v.shell_error ~= 0 then
+    vim.notify("Error fetching Git files. Not in a repository?", vim.log.levels.ERROR)
+    return
+  end
+  if #files == 0 then
+    vim.notify("No modified or untracked files found.", vim.log.levels.WARN)
+    return
+  end
+
+  -- Pass files explicitly to rg via "--" argument
+  require('telescope.builtin').live_grep({
+    additional_args = function()
+      return { "--", unpack(files) }  -- "-- file1 file2 file3..."
+    end
+  })
+end, { desc = "[S]earch [O]pen Git staged/unstaged files" })
+
+    vim.keymap.set('n', '<leader>sgf', builtin.git_files, { desc = '[G]it [F]iles' })
     vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
     vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })

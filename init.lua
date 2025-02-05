@@ -7,6 +7,17 @@ require("core.keymaps")
 local toggle = require("functions.toggle_true_false")
 vim.api.nvim_set_keymap("n", "<leader>tt", "<cmd>lua require'functions.toggle_true_false'.toggle_true_false()<CR>", { noremap = true, silent = true, desc = "Toggle `true` | `false`"  })
 
+local insert_console_log = require("functions.insert_console_log")
+vim.api.nvim_set_keymap("n", "<leader>cl", "<cmd>lua require'functions.insert_console_log'.insert_console_log()<CR>", { noremap = true, silent = true, desc = "console.log('name','value')"  })
+
+local add_use_client = require("functions.add_use_client")
+vim.api.nvim_set_keymap("n", "<leader>ta", "<cmd>lua require'functions.add_use_client'.add_use_client()<CR>", { noremap = true, silent = true, desc = "Add `use client` on top"  })
+
+
+
+
+
+
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -31,9 +42,10 @@ require("lazy").setup({
 	require("plugins.auto-close-tag"),
 	require("plugins.fold-ufo"),
 	{       "rktjmp/lush.nvim"},
-	{
-	"AndreM222/copilot-lualine",
-	},
+	-- {
+	-- "AndreM222/copilot-lualine",
+	-- },
+	
 	-- {
 	-- "echasnovski/mini.icons",
 	-- opts = {},
@@ -49,9 +61,12 @@ require("lazy").setup({
 	require("plugins.lsp"),
 	require("plugins.snippets.luasnip"),
 	require("plugins.path-auto-complete-new"),
+	require("plugins.session"),
 	require("plugins.which-key"),
-	
+	-- require("plugins.copilot"),
+	require("plugins.codium"),
         --------------------------------------------
+	
 	
         -- Git & GitLens
 	require("plugins.gitsigns"),
@@ -61,7 +76,7 @@ require("lazy").setup({
 	
 	-- Tools
 	require("plugins.telescope"),
-	require("plugins.copilot"),
+	require("plugins.toggleterm"),
 	require("plugins.flash"),
 	require("plugins.treesitter"),
 	require("plugins.neotree"),
@@ -107,20 +122,21 @@ require("lazy").setup({
 
 require("functions.cursor-style")
 
+vim.keymap.set({ "n", "i" }, "<C-u>", function()
+    if vim.api.nvim_get_mode().mode == "i" then
+        -- Exit insert mode using the stopinsert command
+        vim.cmd("stopinsert")
+    end
 
+    -- Move to the next diagnostic
+    vim.diagnostic.goto_next()
 
+    -- Move to the end of the diagnostic and enter insert mode
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("ea", true, false, true), 'n', true)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    -- Trigger completion after a slight delay
+    vim.defer_fn(function()
+        require("cmp").complete()
+    end, 10)
+end, { noremap = true, silent = true })
 

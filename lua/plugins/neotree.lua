@@ -286,8 +286,9 @@ return {
 				window = {
 					position = "float",
 					mappings = {
+						["<CR>"] = "open",
 						["A"] = "git_add_all",
-						["s"] = "open_with_window_picker",
+						["s"] = "open",
 						["gu"] = "git_unstage_file",
 						["ga"] = "git_add_file",
 						["gr"] = "git_revert_file",
