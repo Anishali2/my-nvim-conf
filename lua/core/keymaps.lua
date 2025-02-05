@@ -170,4 +170,23 @@ vim.keymap.set("n", "<leader>gs", ":Neotree reveal git_status<CR>", { noremap = 
 
 -- Search for whole word only
 vim.keymap.set("n", "g/", "/\\<\\><Left><Left>", opts)         -- Search for whole words only
+-- Ctrl + Shift + k to close <cmd>qa!<CR>
+vim.keymap.set("n", "<C-S-k>", "<cmd>qa!<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-S-k>", "<cmd>qa!<CR>", { noremap = true, silent = true })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

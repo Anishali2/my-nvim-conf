@@ -132,7 +132,7 @@ return {
 					},
 					["<2-LeftMouse>"] = "open",
 					-- ["<cr>"] = "open",
-					["<cr>"] = "open_with_window_picker",
+					["<cr>"] = "open",
 						
 					["<esc>"] = "cancel", -- close preview or floating neo-tree window
 					["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
@@ -145,7 +145,7 @@ return {
 					["t"] = "open_tabnew",
 					-- ["<cr>"] = "open_drop",
 					-- ["t"] = "open_tab_drop",
-					["s"] = "open_with_window_picker",
+					["s"] = "open",
 					--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
 					["e"] = "close_node",
 					["<Esc>[1;5c"] = "close_node",
@@ -307,9 +307,7 @@ return {
 			},
 		})
 
-		vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
-		-- Should also hide Neotree when click \
-
+        vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
 		vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
 		vim.api.nvim_create_autocmd("VimEnter", {
 			callback = function()
