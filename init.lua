@@ -51,8 +51,8 @@ require("lazy").setup({
 	-- opts = {},
 	-- lazy = true,
     --     },
-
-        -- require("plugins.folder-icons"),
+	-- 'DaikyXendo/nvim-material-icon',
+    -- require("plugins.folder-icons"),
 	-- require("plugins.auto-save"),
 	
 	--------------------------------------------
@@ -118,9 +118,10 @@ require("lazy").setup({
 -- Set up the telescope-myimport plugin
 -- require("telescope").setup({})
 -- require("telescope").load_extension("myimport")
--- require("core.snippets")
+require("custom.icons")
 
 require("functions.cursor-style")
+-- LSP Toggle State
 
 vim.keymap.set({ "n", "i" }, "<C-u>", function()
     if vim.api.nvim_get_mode().mode == "i" then
@@ -140,3 +141,32 @@ vim.keymap.set({ "n", "i" }, "<C-u>", function()
     end, 10)
 end, { noremap = true, silent = true })
 
+
+local lazy = require("lazy")
+
+vim.keymap.set("n", "<leader>pt", function()
+    local plugin_name = "Exafunction/codeium.vim"  -- Ensure this matches the name in lazy.nvim
+    local plugins = lazy.plugins()  -- Get all loaded plugins
+	print(vim.inspect(plugins))
+    local plugin = nil
+    for _, p in ipairs(plugins) do
+        if p.name == plugin_name then
+            plugin = p
+            break
+        end
+    end
+
+    if not plugin then
+        print("Plugin not found: " .. plugin_name)
+        return
+    end
+
+    -- Check if plugin is enabled
+    if plugin._ and plugin._.installed then
+        lazy.disable(plugin_name)
+        print("Plugin disabled: " .. plugin_name)
+    else
+        lazy.enable(plugin_name)
+        print("Plugin enabled: " .. plugin_name)
+    end
+end, { desc = "Toggle Codeium plugin" })

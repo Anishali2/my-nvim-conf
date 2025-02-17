@@ -177,7 +177,20 @@ vim.keymap.set("i", "<C-S-k>", "<cmd>qa!<CR>", { noremap = true, silent = true }
 
 
 
+-- ~/.config/nvim/lua/plugins.lua
+return {
+    {
+        "nvim-tree/nvim-tree.lua",
+        enabled = false, -- Disable by default
+        config = function()
+            require("nvim-tree").setup({
+                -- Your nvim-tree configuration here
+            })
+        end,
+    },
+}
 
+-- ~/.config/nvim/lua/config/keymaps.lua
 
 
 

@@ -4,6 +4,12 @@ return {
   branch = '0.1.x',
   dependencies = {
     'nvim-lua/plenary.nvim',
+    {
+      "nvim-telescope/telescope-media-files.nvim",
+      config = function()
+        require("telescope").load_extension("media_files")
+      end
+    },
     { -- If encountering errors, see telescope-fzf-native README for installation instructions
       'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -48,6 +54,16 @@ return {
       -- You can put your default mappings / updates / etc. in here
     
       --  All the info you're looking for is in `:help telescope.setup()`
+      extensions = {
+         media_files = {
+            -- filetypes whitelist
+            -- defaults to {"png", "jpg", "mp4", "webm", "gif"}
+            filetypes = { "png", "webp", "jpg", "jpeg","svg" },
+            find_cmd = "rg", -- find command (defaults to `fd`)
+            backend = "ueberzugpp", -- Enable proper preview
+
+          }
+      },
       defaults = {
         mappings = {
           i = {
@@ -83,6 +99,7 @@ return {
     -- Enable Telescope extensions if they are installed
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
+    pcall(require('telescope').load_extension, 'media_files')
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
@@ -109,18 +126,17 @@ vim.keymap.set("n", "<leader>so", function()
     end
   })
 end, { desc = "[S]earch [O]pen Git staged/unstaged files" })
-
-    vim.keymap.set('n', '<leader>sgf', builtin.git_files, { desc = '[G]it [F]iles' })
-    vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-    vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-    vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-    vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-    vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-    vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-    vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-    vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+    vim.keymap.set('n', '<leader>sy', ":lua require('telescope.builtin').git_files({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[G]it [F]iles' })
+    vim.keymap.set('n', '<leader>sh', ":lua require('telescope.builtin').help_tags({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [H]elp' })
+    vim.keymap.set('n', '<leader>sk', ":lua require('telescope.builtin').keymaps({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [K]eymaps' })
+    vim.keymap.set('n', '<leader>sf', ":lua require('telescope.builtin').find_files({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [F]iles' })
+    vim.keymap.set('n', '<leader>ss', ":lua require('telescope.builtin').builtin({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [S]elect Telescope' })
+    vim.keymap.set('n', '<leader>sw', ":lua require('telescope.builtin').grep_string({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch current [W]ord' })
+    vim.keymap.set('n', '<leader>sg', ":lua require('telescope.builtin').live_grep({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch by [G]rep' })
+    vim.keymap.set('n', '<leader>sd', ":lua require('telescope.builtin').diagnostics({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [D]iagnostics' })
+    vim.keymap.set('n', '<leader>sr', ":lua require('telescope.builtin').resume({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [R]esume' })
+    vim.keymap.set('n', '<leader>s.', ":lua require('telescope.builtin').oldfiles({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch Recent Files ("." for repeat)' })
+    vim.keymap.set('n', '<leader><leader>', ":lua require('telescope.builtin').buffers({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[ ] Find existing buffers' })
     vim.api.nvim_set_keymap('n','<leader>gd',':Telescope lsp_definitions<CR>',{ noremap = true, silent = true })
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()

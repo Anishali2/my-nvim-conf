@@ -306,6 +306,7 @@ return {
 				},
 			},
 		})
+		vim.api.nvim_set_hl(0, "CustomFolderIcon", { fg = "#ffa500" }) -- Orange color
 
         vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
 		vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
