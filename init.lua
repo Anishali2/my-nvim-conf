@@ -33,7 +33,8 @@ require("lazy").setup({
 	-- UI & Appearance
 	require("plugins.vscode-theme"), -- VS-Code theme
 	require("plugins.scroll-bar"), -- Scroll Bar
-	require("plugins.bufferline"), -- Tabs bar
+	-- require("plugins.bufferline"), -- Tabs bar
+	require("plugins.barbar"), -- Tabs bar
 	require("plugins.lualine"), -- Bottom Line
 	require("plugins.alpha"), -- ASCII Code Image
 	require("plugins.indent-blankline"), -- Editor Space Line <Tab> 
@@ -170,3 +171,4 @@ vim.keymap.set("n", "<leader>pt", function()
         print("Plugin enabled: " .. plugin_name)
     end
 end, { desc = "Toggle Codeium plugin" })
+

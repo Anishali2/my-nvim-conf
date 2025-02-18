@@ -69,50 +69,97 @@ return {
 			--       end
 			--   end , -- this sorts files and directories descendantly
 			default_component_configs = {
-				-- icon = {
-				-- 	provider = function(icon, node)
-				-- 	  local text, hl
-				-- 	  local web_devicons = require("nvim-web-devicons")
-				  
-				-- 	  -- Custom icon for the "src" folder
-				-- 	  local custom_folder_icons = {
-				-- 		["src"] = { text = "", hl = "CustomFolderIcon" },
-				-- 	  }
-				  
-				-- 	  if node.type == "file" then
-				-- 		text, hl = web_devicons.get_icon(node.name, nil, { default = true })
-				-- 	  elseif node.type == "directory" then
-				-- 		-- Check if the folder has a custom icon
-				-- 		local custom_icon = custom_folder_icons[node.name]
-				-- 		if custom_icon then
-				-- 		  text = custom_icon.text
-				-- 		  hl = custom_icon.hl
-				-- 		else
-				-- 		  text, hl = web_devicons.get_icon_by_filetype("dir", { default = true })
-				-- 		end
-				  
-				-- 		-- Set the open icon if the folder is expanded
-				-- 		if node:is_expanded() then
-				-- 		  text = web_devicons.get_icon_by_filetype("dir_open", { default = true }) or text
-				-- 		end
-				-- 	  end
-				  
-				-- 	  -- Set the icon text and highlight only if they exist
-				-- 	  if text then
-				-- 		icon.text = text
-				-- 	  end
-				-- 	  if hl then
-				-- 		icon.highlight = hl
-				-- 	  end
-				-- 	end,
-				--   },-- Rest of your component configurations
-				-- kind_icon = {
-				--   provider = function(icon, node)
-				-- 	local mini_icons = require("mini.icons")
-				-- 	icon.text, icon.highlight = mini_icons.get("lsp", node.extra.kind.name)
-				--   end,
-				-- },
-				-- ... other configurations
+			icon = {
+				    provider = function(icon, node)
+				      local text, hl
+				      local web_devicons = require("nvim-web-devicons")
+				      
+				      -- Custom icon definitions
+				      local custom_icons = {
+					-- Closed folders
+					dir = {
+					  ["src"] = { text = "󱂵", hl = "Src" },
+					  [".git"] = { text = "󰊤", hl = "Git" },
+                                          ["app"] = { text = "󰲂", hl = "App" },
+					  ["hooks"] = { text = "󱋣", hl = "Hooks" },
+					  ["api"] = { text = "󰉐", hl = "Api" },
+					  ["settings"] = { text = "󱁿", hl = "Settings" },
+					  ["node_modules"] = { text = "", hl = "Node_modules" },
+					  ["public"] = { text = "󰉏", hl = "Public" },
+					  ["components"] = { text = "󰣞", hl = "Components" },
+					  ["assets"] = { text = "󰚝", hl = "Assets" },
+					  ["types"] = { text = "", hl = "Types" },
+					  ["utils"] = { text = "", hl = "Utils" },
+					  ["pages"] = { text = "󰴉", hl = "Pages" },
+					  ["providers"] = { text = "", hl = "Providers" },
+					  ["svg"] = { text = "󰴉", hl = "Svg" },
+					  ["fonts"] = { text = "", hl = "Fonts" },
+					  ["test"] = { text = "", hl = "Test" },
+					  ["home"] = { text = "󰴉", hl = "Home" },
+					  ["store"] = { text = "󰛫", hl = "Store" },
+					  ["state"] = { text = "󰛫", hl = "State" },
+					  ["auth"] = { text = "󰉐", hl = "Auth" },
+					  ["login"] = { text = "󰉐", hl = "Login" },
+					  ["languages"] = { text = "󱉭", hl = "Languages" },
+					  default = { text = "", hl = "WebDirectoryIcon" }  -- Default closed folder
+					},
+					-- Open folders
+					dir_open = {
+					  ["src"] = { text = "", hl = "Src" },
+					  ["app"] = { text = "", hl = "App" },
+					  [".git"] = { text = "", hl = "Git" },
+					  ["hooks"] = { text = "", hl = "Hooks" },
+					  ["api"] = { text = "", hl = "Api" },
+					  ["settings"] = { text = "", hl = "Settings" },
+					  ["node_modules"] = { text = "", hl = "Node_modules" },
+					  ["public"] = { text = "", hl = "Public" },
+					  ["components"] = { text = "", hl = "Components" },
+					  ["assets"] = { text = "", hl = "Assets" },
+					  ["types"] = { text = "", hl = "Types" },
+					  ["utils"] = { text = "", hl = "Utils" },
+					  ["pages"] = { text = "", hl = "Pages" },
+					  ["providers"] = { text = "", hl = "Providers" },
+					  ["svg"] = { text = "", hl = "Svg" },
+					  ["fonts"] = { text = "", hl = "Fonts" },
+					  ["test"] = { text = "", hl = "Test" },
+					  ["home"] = { text = "", hl = "Home" },
+					  ["store"] = { text = "", hl = "Store" },
+					  ["state"] = { text = "", hl = "State" },
+					  ["auth"] = { text = "", hl = "Auth" },
+					  ["login"] = { text = "", hl = "Login" },
+					  ["languages"] = { text = "", hl = "Languages" },
+					  default = { text = "", hl = "WebDirectoryOpenIcon" }  -- Default open folder
+					}
+				      }
+
+				      if node.type == "file" then
+					-- Regular file icons
+					text, hl = web_devicons.get_icon(node.name, nil, { default = true })
+				      elseif node.type == "directory" then
+					-- Handle folder icons
+					local folder_type = node:is_expanded() and "dir_open" or "dir"
+					local folder_name = node.name
+					
+					-- Get custom icon or fallback to default
+					local icon_def = custom_icons[folder_type][folder_name] or custom_icons[folder_type].default
+					
+					text = icon_def.text
+					hl = icon_def.hl
+					
+					-- Special case: Use web-devicons for non-special folders when available
+					if folder_name ~= "src" then
+					  local web_icon, web_hl = web_devicons.get_icon_by_filetype("directory", { default = false })
+					  if web_icon then
+					    text = web_icon
+					    hl = web_hl
+					  end
+					end
+				      end
+
+				      icon.text = text or " "
+				      icon.highlight = hl or "Normal"
+				    end,
+				  },				-- ... other configurations
 			  },
 			-- A list of functions, each representing a global custom command
 			-- that will be available in all sources (if not overridden in `opts[source_name].commands`)
@@ -183,6 +230,11 @@ return {
 				},
 			},
 			nesting_rules = {},
+			hightlight = {
+				enable = true,
+				current_file = "NeoTreeFileNameOpened",
+
+			},
 			filesystem = {
 				filtered_items = {
 					visible = false, -- when true, they will just be displayed differently than normal items
@@ -306,8 +358,31 @@ return {
 				},
 			},
 		})
-		vim.api.nvim_set_hl(0, "CustomFolderIcon", { fg = "#ffa500" }) -- Orange color
-
+		vim.api.nvim_set_hl(0, "WebDirectoryIcon", { fg = "#a7a9be" })  -- Normal folder color
+		vim.api.nvim_set_hl(0, "WebDirectoryOpenIcon", { fg = "#a7a9be" })  -- Open folder color
+		vim.api.nvim_set_hl(0, "Src", { fg = "#ff8906" }) 
+		vim.api.nvim_set_hl(0, "Auth", { fg = "#ff8906" }) 
+		vim.api.nvim_set_hl(0, "Login", { fg = "#ff8906" }) 
+		vim.api.nvim_set_hl(0, "App", { fg = "#e53170" }) 
+		vim.api.nvim_set_hl(0, "Hooks", { fg = "#a7a9be" }) 
+		vim.api.nvim_set_hl(0, "Api", { fg = "#f25f4c" }) 
+		vim.api.nvim_set_hl(0, "Settings", { fg = "#7f5af0" }) 
+		vim.api.nvim_set_hl(0, "Node_modules", { fg = "#2cb67d" }) 
+		vim.api.nvim_set_hl(0, "Public", { fg = "#ff5470" }) 
+		vim.api.nvim_set_hl(0, "Assets", { fg = "#8c7851" }) 
+		vim.api.nvim_set_hl(0, "Types", { fg = "#fec7d7" }) 
+		vim.api.nvim_set_hl(0, "Utils", { fg = "#a7a9be" }) 
+		vim.api.nvim_set_hl(0, "Pages", { fg = "#a786df" }) 
+		vim.api.nvim_set_hl(0, "Components", { fg = "#fde24f" }) 
+		vim.api.nvim_set_hl(0, "Providers", { fg = "#00332c" }) 
+		vim.api.nvim_set_hl(0, "Svg", { fg = "#475d5b" }) 
+		vim.api.nvim_set_hl(0, "Fonts", { fg = "#f2f7f5" }) 
+		vim.api.nvim_set_hl(0, "Git", { fg = "#f2f7f5" }) 
+		vim.api.nvim_set_hl(0, "Test", { fg = "#3da9fc" }) 
+		vim.api.nvim_set_hl(0, "Home", { fg = "#094067" }) 
+		vim.api.nvim_set_hl(0, "Store", { fg = "#90b4ce" }) 
+		vim.api.nvim_set_hl(0, "State", { fg = "#272343" }) 
+		vim.api.nvim_set_hl(0, "Languages", { fg = "#bae8e8" }) 
         vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
 		vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
 		vim.api.nvim_create_autocmd("VimEnter", {
