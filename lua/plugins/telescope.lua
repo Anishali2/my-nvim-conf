@@ -67,19 +67,21 @@ return {
       defaults = {
         mappings = {
           i = {
+            ['<C-3>'] = require('telescope.actions.layout').toggle_preview,
             ['<C-k>'] = require('telescope.actions').move_selection_previous, -- move to prev result
             ['<C-j>'] = require('telescope.actions').move_selection_next, -- move to next result
             ['<C-l>'] = require('telescope.actions').select_default, -- open file
-        ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Insert mode
+            ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Insert mode
           },
-      n = {
-        ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Normal mode
-      },
+          n = {
+            ['<leader>gn'] = require('telescope.actions.layout').toggle_preview,
+            ["<Esc>"] = require('telescope.actions').close, -- Bind ESC to close in Normal mode
+          },
         },
       },
       pickers = {
         find_files = {
-          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          file_ignore_patterns = { 'node_modules','.next','.git', '.venv' },
           hidden = true,
           cache = true
         },
@@ -145,7 +147,7 @@ end, { desc = "[S]earch [O]pen Git staged/unstaged files" })
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
         winblend = 0,
         previewer = false,
-        border = true,
+        border = false,
       })
     end, { desc = '[/] Fuzzily search in current buffer' })
 

@@ -5,7 +5,25 @@ return {
     local luasnip = require("luasnip")
     local Path = require("plenary.path")
     local scan = require("plenary.scandir")
-
+    local lspconfig = require("lspconfig")
+     lspconfig.ts_ls.setup({
+          filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+          -- Add these filters to ignore directories
+          root_dir = lspconfig.util.root_pattern(
+            "package.json",
+            "tsconfig.json",
+            "jsconfig.json",
+            ".git"
+          ),
+          on_new_config = function(config, root_dir)
+            -- Disable LSP if in excluded directories
+            if root_dir:match("node_modules") 
+              or root_dir:match("%.next")
+              or root_dir:match("%.git") then
+              config.enabled = false
+            end
+          end
+        })
     -- Extend LuaSnip for React filetypes
     luasnip.filetype_extend("javascript", { "javascriptreact" })
     luasnip.filetype_extend("typescript", { "typescriptreact" })
@@ -101,16 +119,25 @@ return {
     -- Combined optimized configuration
     return {
       completion = {
-        completeopt = "menu,menuone,noinsert",
+         autocomplete = {
+          cmp.TriggerEvent.TextChanged,
+          cmp.TriggerEvent.InsertEnter,
+        },
+        completeopt = "menu,menuone,noselect,noinsert",
+        keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
+        keyword_length = 2,       
         throttle = 50,
         debounce = 150,
       },
+      preselect = cmp.PreselectMode.None,
       performance = {
-        max_view_entries = 20,
-        debounce = 150,
-        throttle = 50,
-        fetching_timeout = 200,
-      },
+     async_budget = 2,          -- Max async operations per cycle
+        max_view_entries = 15,     -- Reduce rendered items
+        fetching_timeout = 250,    -- Timeout for slow completions
+        debounce = 250,            -- Increase completion debounce
+        throttle = 150,            -- Throttle UI updates
+        confirm_resolve_timeout = 50,      },
+
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -154,7 +181,27 @@ return {
           end
         end, { "i", "s" }),
         ["<leader>tq"] = cmp.mapping(function()
+          --
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "*",
+      callback = function(args)
+        local forbidden_fts = {
+          "javascript", "typescript", 
+          "javascriptreact", "typescriptreact"
+        }
+        
+        if not vim.tbl_contains(forbidden_fts, vim.bo[args.buf].filetype) then
+          vim.lsp.stop_client(vim.lsp.get_active_clients({
+            buffer = args.buf
+          }))
+        end
+      end
+    })     
+          
+          
+          
   -- Move to the next diagnostic
+
           vim.diagnostic.goto_next()
 
           -- Move to the end of the word
