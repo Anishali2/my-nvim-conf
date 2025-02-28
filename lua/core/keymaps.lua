@@ -76,6 +76,7 @@ vim.keymap.set("v", "p", '"_dP', opts)
 -- use f7 key to switch between normal mode and insert mode only use one button
 vim.keymap.set("n", "<F7>", "<cmd>startinsert<CR>", opts)
 vim.keymap.set("i", "<F7>", "<cmd>stopinsert<CR>", opts)
+vim.keymap.set("v", "<F7>", "<ESC>", opts)
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
@@ -178,17 +179,6 @@ vim.keymap.set("i", "<C-S-k>", "<cmd>qa!<CR>", { noremap = true, silent = true }
 
 
 -- ~/.config/nvim/lua/plugins.lua
-return {
-    {
-        "nvim-tree/nvim-tree.lua",
-        enabled = false, -- Disable by default
-        config = function()
-            require("nvim-tree").setup({
-                -- Your nvim-tree configuration here
-            })
-        end,
-    },
-}
 
 -- ~/.config/nvim/lua/config/keymaps.lua
 

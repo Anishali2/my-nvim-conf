@@ -65,6 +65,7 @@ return {
           }
       },
       defaults = {
+        winblend = 15, -- Adjust this value (0-100) for desired transparency
         mappings = {
           i = {
             ['<C-3>'] = require('telescope.actions.layout').toggle_preview,
@@ -87,7 +88,7 @@ return {
         },
       },
       live_grep = {
-        file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+        file_ignore_patterns = { 'node_modules', '.git', '.venv','package-lock.json','.next','yarn.lock','pnpm-lock.yaml'},
         additional_args = function(_)
           return { '--hidden' }
         end,
@@ -135,7 +136,7 @@ end, { desc = "[S]earch [O]pen Git staged/unstaged files" })
     vim.keymap.set('n', '<leader>sf', ":lua require('telescope.builtin').find_files({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [F]iles' })
     vim.keymap.set('n', '<leader>ss', ":lua require('telescope.builtin').builtin({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [S]elect Telescope' })
     vim.keymap.set('n', '<leader>sw', ":lua require('telescope.builtin').grep_string({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('n', '<leader>sg', ":lua require('telescope.builtin').live_grep({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch by [G]rep' })
+    vim.keymap.set('n', '<leader>sg', ":lua require('telescope.builtin').live_grep({ additional_args = { '--fixed-strings','--ignore-case' }})<CR>", { desc = '[S]earch by [G]rep' })
     vim.keymap.set('n', '<leader>sd', ":lua require('telescope.builtin').diagnostics({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', ":lua require('telescope.builtin').resume({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', ":lua require('telescope.builtin').oldfiles({ additional_args = { '--fixed-strings' }})<CR>", { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -145,7 +146,7 @@ end, { desc = "[S]earch [O]pen Git staged/unstaged files" })
     vim.keymap.set('n', '<leader>/', function()
       -- You can pass additional configuration to Telescope to change the theme, layout, etc.
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 0,
+        winblend = 15,
         previewer = false,
         border = false,
       })

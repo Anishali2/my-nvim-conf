@@ -1,5 +1,6 @@
 return {
 	-- Ensure you have treesitter installed and configured
+	-- 
 	{
 	  'nvim-treesitter/nvim-treesitter',
 	  build = ':TSUpdate',  -- makes sure parsers are up to date

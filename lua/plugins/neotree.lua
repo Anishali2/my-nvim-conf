@@ -374,7 +374,7 @@ return {
 		vim.api.nvim_set_hl(0, "Utils", { fg = "#a7a9be" }) 
 		vim.api.nvim_set_hl(0, "Pages", { fg = "#a786df" }) 
 		vim.api.nvim_set_hl(0, "Components", { fg = "#fde24f" }) 
-		vim.api.nvim_set_hl(0, "Providers", { fg = "#00332c" }) 
+		vim.api.nvim_set_hl(0, "Providers", { fg = "#2cb67d" }) 
 		vim.api.nvim_set_hl(0, "Svg", { fg = "#475d5b" }) 
 		vim.api.nvim_set_hl(0, "Fonts", { fg = "#f2f7f5" }) 
 		vim.api.nvim_set_hl(0, "Git", { fg = "#f2f7f5" }) 
@@ -383,7 +383,6 @@ return {
 		vim.api.nvim_set_hl(0, "Store", { fg = "#90b4ce" }) 
 		vim.api.nvim_set_hl(0, "State", { fg = "#272343" }) 
 		vim.api.nvim_set_hl(0, "Languages", { fg = "#bae8e8" }) 
-        vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
 		vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
 		vim.api.nvim_create_autocmd("VimEnter", {
 			callback = function()
