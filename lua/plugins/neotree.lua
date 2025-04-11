@@ -7,24 +7,6 @@ return {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
 		{ "echasnovski/mini.icons", opts = {} }, -- add mini.icons
-
-		 
-		-- {
-		-- 	"DaikyXendo/nvim-material-icon",
-		-- 	lazy = false,
-		-- 	priority = 1000,
-		-- 	config = function()
-		-- 		local web_devicons_ok, web_devicons = pcall(require, "nvim-web-devicons")
-		-- 		local material_icons_ok, material_icons = pcall(require, "nvim-material-icons")
-		--
-		-- 		 if web_devicons_ok and material_icons_ok then
-		-- 			web_devicons.setup({
-		-- 				override = material_icons.get_icons()
-		-- 			})
-		-- 		end
-		-- 	end
-		-- },
-		-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		{
 			"s1n7ax/nvim-window-picker",
 			version = "2.*",
@@ -61,13 +43,6 @@ return {
 			open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
 			sort_case_insensitive = false, -- used when sorting files and directories in the tree
 			sort_function = nil, -- use a custom function for sorting files and directories in the tree
-			-- sort_function = function (a,b)
-			--       if a.type == b.type then
-			--           return a.path > b.path
-			--       else
-			--           return a.type > b.type
-			--       end
-			--   end , -- this sorts files and directories descendantly
 			default_component_configs = {
 			icon = {
 				    provider = function(icon, node)
@@ -172,6 +147,9 @@ return {
 					noremap = true,
 					nowait = true,
 				},
+				win_options = {
+					cursorline = true,
+				},
 				mappings = {
 					["<space>"] = {
 						"toggle_node",
@@ -236,6 +214,18 @@ return {
 
 			},
 			filesystem = {
+				indent = {
+				 indent_size = 5, -- Adjust indentation (not cursor size, but affects visual spacing)
+				 with_markers = true,
+				},
+				renderers = {
+				 indent = {
+				 component = function(config, node, _)
+				  local icon = "🗑️ " -- "Bin" icon (optional)
+				  return string.rep(" ", config.indent_size) .. icon
+				 end,
+				 },
+				},
 				filtered_items = {
 					visible = false, -- when true, they will just be displayed differently than normal items
 					hide_dotfiles = false,
@@ -383,9 +373,14 @@ return {
 		vim.api.nvim_set_hl(0, "Store", { fg = "#90b4ce" }) 
 		vim.api.nvim_set_hl(0, "State", { fg = "#272343" }) 
 		vim.api.nvim_set_hl(0, "Languages", { fg = "#bae8e8" }) 
-        vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
-		vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
-		vim.api.nvim_create_autocmd("VimEnter", {
+		vim.api.nvim_set_hl(0, 'NeoTreeCursorLine', {
+				  bg = '#3B4252',  -- Background color (adjust to match your theme)
+				  underline = true, -- Optional: Add underline for emphasis
+				  bold = true,      -- Optional: Make text bold
+				})
+		vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', {noremap = true, silent = true })
+			vim.keymap.set("n", "<leader>e", ":Neotree toggle position=left<CR>", { noremap = true, silent = true })
+			vim.api.nvim_create_autocmd("VimEnter", {
 			callback = function()
 				-- Only open if no files were explicitly specified
 				if #vim.fn.argv() == 0 then

@@ -42,7 +42,7 @@ require("lazy").setup({
 	require("plugins.autoformatting"),
 	require("plugins.auto-close-tag"),
 	require("plugins.fold-ufo"),
-	require("plugins.cursorline"),
+	--require("plugins.cursorline"),
 	{       "rktjmp/lush.nvim"},
 	-- {
 	-- "AndreM222/copilot-lualine",
