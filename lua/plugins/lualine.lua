@@ -11,9 +11,17 @@ return {
 
     local filename = {
       'filename',
-      file_status = true, -- displays file status (readonly status, modified status)
+      -- file_status = true, -- displays file status (readonly status, modified status)
       path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
     }
+
+    local modified_indicator = function()
+      if vim.bo.modified then
+        return '[+] '
+      else
+        return ''
+      end
+    end
 
     local hide_in_width = function()
       return vim.fn.winwidth(0) > 100
@@ -52,7 +60,10 @@ return {
       sections = {
         lualine_a = { mode },
         lualine_b = { 'branch' },
-        lualine_c = { filename },
+        -- lualine_c = { filename },
+        lualine_c = { modified_indicator, filename }, -- Add the custom indicator here
+
+
         -- lualine_x = {{
         --     'copilot',
         --     -- Default values
