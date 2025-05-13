@@ -2,6 +2,7 @@
 require("core.options")
 require("core.autocmds")
 require("core.keymaps")
+--require("core.snippets")
 
 -- Functions
 local toggle = require("functions.toggle_true_false")
